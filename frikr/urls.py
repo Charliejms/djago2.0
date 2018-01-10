@@ -19,5 +19,6 @@ from photos import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home')
+    path('', views.home, name='home'),
+    path('photo/<pk>', views.detail, name='detail')
 ]
