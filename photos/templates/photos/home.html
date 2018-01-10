@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenido a Frikr</title>
+</head>
+<body>
+    <h1>Bienvenido a Frikr</h1>
+    <h2>Últimas fotos publicadas</h2>
+    {% if photos_list|length > 0 %}
+        {% for photo in photos_list %}
+            <img src="{{ photo.url }}" alt="{{ photo.name }}" height="150">
+        {% endfor %}
+    {% else %}
+        ¡Sé el primero en publicar una foto!
+    {% endif %}
+</body>
+</html>

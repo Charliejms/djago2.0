@@ -2,7 +2,12 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
+from photos.models import Photo
 
 
 def home(request):
-    return HttpResponse("Say hello")
+    photos = Photo.objects.all().order_by('-created_at')
+    context = {
+        'photos_list': photos[:5]
+    }
+    return render(request, 'photos/home.html', context)
