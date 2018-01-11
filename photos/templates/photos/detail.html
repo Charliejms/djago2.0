@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ photo.name }}</title>
-</head>
-<body>
-<h1> {{ photo.name }}</h1>
+{% extends 'base.html' %}
+
+{% block title %} {{ photo.name }} {% endblock %}
+
+{% block section %}
+    <h1> {{ photo.name }}</h1>
     <img src="{{ photo.url }}" alt="{{ photo.name }}" height="120">
     <p>{{ photo.description }}</p>
     <p> <strong> Author:</strong> {{ photo.owner.username }}</p>
-</body>
-</html>
+{% endblock %}
