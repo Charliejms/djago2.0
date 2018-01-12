@@ -1,16 +1,24 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as django_logout, login as django_login, authenticate
-
+from django.views.generic import View
 
 # Create your views here.
 from users.form import LoginForm
 
 
-def login(request):
+class LoginView(View):
 
-    error_message = []
-    if request.method == 'POST':
+    @staticmethod
+    def get(request):
+        form = LoginForm()
+        context = {
+            'login_form': form
+        }
+        return render(request, 'users/login.html', context)
+
+    def post(self, request):
+        error_message = []
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -25,17 +33,17 @@ def login(request):
                     return redirect(url)
                 else:
                     error_message.append('El usuario no esta activo')
-    else:
-        form = LoginForm()
-    context = {
-        'errors': error_message,
-        'login_form': form
-    }
+        context = {
+            'errors': error_message,
+            'login_form': form
+        }
 
-    return render(request, 'users/login.html', context)
+        return render(request, 'users/login.html', context)
 
 
-def logout(request):
-    if request.user.is_authenticated:
-        django_logout(request)
-    return redirect('home')
+class LogoutView(View):
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            django_logout(request)
+        return redirect('home')

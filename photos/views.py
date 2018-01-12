@@ -2,63 +2,92 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.generic import View
 
 # Create your views here.
 from photos.form import PhotoForm
 from photos.models import Photo, PUBLIC
 
 
-def home(request):
-    photos = Photo.objects.all().filter(visibility=PUBLIC).order_by('-created_at')
-    context = {
-        'photos_list': photos[:5]
-    }
-    return render(request, 'photos/home.html', context)
-
-
-def detail(request, pk):
-    """
-    Carga la página de detalle de una foto
-    :param request: HttpRequest
-    :param pk: id de la foto
-    :return: HttpResponse
-    """
-    posible_photos = Photo.objects.filter(pk=pk).select_related('owner')
-    photo = posible_photos[0] if len(posible_photos) == 1 else None
-    if photo is not None:
+class HomeView(View):
+    @staticmethod
+    def get(request):
+        photos = Photo.objects.all().filter(visibility=PUBLIC).order_by('-created_at')
         context = {
-            'photo': photo
+            'photos_list': photos[:5]
         }
-        return render(request, 'photos/detail.html', context)
-    else:
-        return HttpResponseNotFound()
+        return render(request, 'photos/home.html', context)
 
 
-@login_required()
-def create(request):
-    """
-    Muestra un formualario para crear una foto y lo muetra si es POST
-    :param request: HttpRequest
-    :return: HttpResponse
-    """
-    success_message = ''
-    if request.method == 'GET':
+class DetailView(View):
+    def get(self, request, pk):
+        """
+        Carga la página de detalle de una foto
+        :param request: HttpRequest
+        :param pk: id de la foto
+        :return: HttpResponse
+        """
+        posible_photos = Photo.objects.filter(pk=pk).select_related('owner')
+        photo = posible_photos[0] if len(posible_photos) == 1 else None
+        if photo is not None:
+            context = {
+                'photo': photo
+            }
+            return render(request, 'photos/detail.html', context)
+        else:
+            return HttpResponseNotFound()
+
+
+class OnlyAuthenticatedView(View):
+
+    def get(self, request):
+        if request.user.is_authenticated():
+            return super(OnlyAuthenticatedView, self).get(request)
+        else:
+            # TODO: Creación del metodo para no utilizar decoradores.
+            pass
+
+
+class CreatePhotoView(View):
+
+    @method_decorator(login_required())
+    def get(self, request):
+        """
+        Muestra un formualario para crear una foto
+        :param request: HttpRequest
+        :return: HttpResponse
+        """
+        success_message = ''
         form = PhotoForm()
-    else:
+
+        context = {
+            'photo_form': form,
+        }
+        return render(request, 'photos/create.html', context)
+
+    @method_decorator(login_required())
+    def post(self, request):
+        """
+        Crea una foto en base a la información del POST
+        :param request: HttpRequest
+        :return: HttpResponse
+        """
+        success_message = ''
         photo_with_owner = Photo()
         photo_with_owner.owner = request.user
         form = PhotoForm(request.POST, instance=photo_with_owner)
         if form.is_valid():
-            new_photo = form.save() # Guarda el objeto y me lo devuelves
+            new_photo = form.save()  # Guarda el objeto y me lo devuelves
             form = PhotoForm()
             success_message = 'Guardado con éxito!'
             success_message += '<a href="{0}">'.format(reverse('detail', args=[new_photo.pk]))
             success_message += 'Ver foto'
             success_message += '</a>'
 
-    context = {
-        'photo_form': form,
-        'success_message': success_message,
+        context = {
+            'photo_form': form,
+            'success_message': success_message,
 
-    }
-    return render(request, 'photos/create.html', context)
+        }
+        return render(request, 'photos/create.html', context)
