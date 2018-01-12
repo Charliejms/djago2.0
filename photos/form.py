@@ -11,7 +11,6 @@ class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
         fields = [
-            'owner',
             'name',
             'url',
             'description',
