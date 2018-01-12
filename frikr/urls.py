@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from photos import views
+from photos import views as views_photo
 from users import views as views_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Photos
-    path('', views.home, name='home'),
-    path('photo/<pk>', views.detail, name='detail'),
+    path('', views_photo.home, name='home'),
+    path('photo/<pk>', views_photo.detail, name='detail'),
+    path('photo/create/', views_photo.create, name='photo_create'),
     # User
     path('login/', views_user.login, name='user_login'),
     path('logout', views_user.logout, name='user_logout'),
