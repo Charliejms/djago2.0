@@ -186,3 +186,6 @@ BOOTSTRAP3 = {
 # Login URL
 
 LOGIN_URL = '/login'
+
+# bad words settings
+PROJECT_BADWORDS = ['Pardillo', 'Abrazafarolas', 'Fotón']
