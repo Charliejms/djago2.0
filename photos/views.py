@@ -10,6 +10,19 @@ from photos.form import PhotoForm
 from photos.models import Photo, PUBLIC
 
 
+class PhotoQuerySet(object):
+
+    def get_photos_queryset(self, request):
+        if not request.user.is_authenticated:
+            photos = Photo.objects.filter(visibility=PUBLIC)
+        elif request.user.is_superuser:
+            photos = Photo.objects.all()
+        else:
+            photos = Photo.objects.filter(Q(owner=request.user) |
+                                          Q(visibility=PUBLIC))
+        return photos
+
+
 class HomeView(View):
     @staticmethod
     def get(request):
@@ -20,7 +33,7 @@ class HomeView(View):
         return render(request, 'photos/home.html', context)
 
 
-class DetailView(View):
+class DetailView(View, PhotoQuerySet):
     def get(self, request, pk):
         """
         Carga la página de detalle de una foto
@@ -28,15 +41,15 @@ class DetailView(View):
         :param pk: id de la foto
         :return: HttpResponse
         """
-        posible_photos = Photo.objects.filter(pk=pk).select_related('owner')
-        photo = posible_photos[0] if len(posible_photos) == 1 else None
+        posible_photos = self.get_photos_queryset(request).filter(pk=pk).select_related('owner')
+        photo = posible_photos[0] if len(posible_photos) >= 1 else None
         if photo is not None:
             context = {
                 'photo': photo
             }
             return render(request, 'photos/detail.html', context)
         else:
-            return HttpResponseNotFound()
+            return HttpResponseNotFound('No existe la foto')
 
 
 class OnlyAuthenticatedView(View):
@@ -93,7 +106,7 @@ class CreatePhotoView(View):
         return render(request, 'photos/create.html', context)
 
 
-class ListPhotoView(View):
+class ListPhotoView(View, PhotoQuerySet):
 
     def get(self, request):
         """
@@ -104,14 +117,8 @@ class ListPhotoView(View):
         :param request: HttpRequest
         :return: HttpResponse
         """
-        if not request.user.is_authenticated:
-            photos = Photo.objects.filter(visibility=PUBLIC)
-        elif request.user.is_superuser:
-            photos = Photo.objects.all()
-        else:
-            photos = Photo.objects.filter(Q(owner=request.user) |
-                                          Q(visibility=PUBLIC))
+
         context = {
-            'photos': photos
+            'photos': self.get_photos_queryset(request)
         }
         return render(request, 'photos/list.html', context)
