@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% for photo in photos_list %}
+    <a href="{% url 'detail' photo.pk %}">
+       <img src="{{ photo.url }}" alt="{{ photo.name }}" height="150">
+    </a>
+{% endfor %}
