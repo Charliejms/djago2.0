@@ -8,8 +8,10 @@
 <nav>
     <a href="{% url 'home' %}">Home</a>
     <a href="{% url 'photo_create' %}">Create</a>
+    <a href="{% url 'photo_list' %}">List</a>
     {% if  user.is_authenticated %}
         <a href="{% url 'user_logout' %}"> Salir</a>
+        <a href="{% url 'user_photos' %}">Mis Fotos</a>
     {% else %}
         <a href="{% url 'user_login' %}"> Entrar</a>
     {% endif %}
