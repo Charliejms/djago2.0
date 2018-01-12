@@ -183,3 +183,6 @@ BOOTSTRAP3 = {
         'inline': 'bootstrap3.renderers.InlineFieldRenderer',
     },
 }
+# Login URL
+
+LOGIN_URL = '/login'

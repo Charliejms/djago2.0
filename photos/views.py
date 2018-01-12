@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from photos.form import PhotoForm
@@ -33,6 +34,7 @@ def detail(request, pk):
         return HttpResponseNotFound()
 
 
+@login_required()
 def create(request):
     """
     Muestra un formualario para crear una foto y lo muetra si es POST
