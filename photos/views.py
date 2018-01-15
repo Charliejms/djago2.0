@@ -3,11 +3,15 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.db.models import Q
 # Create your views here.
 from photos.form import PhotoForm
 from photos.models import Photo, PUBLIC
+
+# import generic classes
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class PhotoQuerySet(object):
@@ -122,3 +126,21 @@ class ListPhotoView(View, PhotoQuerySet):
             'photos': self.get_photos_queryset(request)
         }
         return render(request, 'photos/list.html', context)
+
+
+class UserPhotoView(LoginRequiredMixin, ListView):
+    model = Photo
+    template_name = 'photos/user_photos.html'
+
+    def get_queryset(self):
+        query_set = super(UserPhotoView, self).get_queryset()
+        return query_set.filter(owner=self.request.user)
+
+
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     photos = Photo
+    #     # TODO añadir articulos relacionados //baners -etc
+    #     context = super(UserPhotoView, self).get_context_data(**kwargs)
+    #     context['list_related'] = Photo.objects.filter(owner='2')
+    #     return context
+

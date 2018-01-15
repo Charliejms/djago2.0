@@ -19,7 +19,8 @@ from photos import views as views_photo
 from photos.views import (HomeView,
                           DetailView,
                           CreatePhotoView,
-                          ListPhotoView)
+                          ListPhotoView,
+                          UserPhotoView,)
 from users.views import (LoginView,
                          LogoutView)
 
@@ -31,6 +32,7 @@ urlpatterns = [
     path('photo/create/', CreatePhotoView.as_view(), name='photo_create'),
     # List photos user
     path('photo/list/', ListPhotoView.as_view(), name='photo_list'),
+    path('<username>/misfotos/', UserPhotoView.as_view(), name='user_photos'),
     # User
     path('login/', LoginView.as_view(), name='user_login'),
     path('logout', LogoutView.as_view(), name='user_logout'),
