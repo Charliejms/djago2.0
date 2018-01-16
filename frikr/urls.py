@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from photos import views as views_photo
 from photos.views import (HomeView,
                           DetailView,
                           CreatePhotoView,
                           ListPhotoView,
                           UserPhotoView,)
+from users.api.views import SampleAPI
 from users.views import (LoginView,
                          LogoutView)
 
@@ -36,4 +36,7 @@ urlpatterns = [
     # User
     path('login/', LoginView.as_view(), name='user_login'),
     path('logout', LogoutView.as_view(), name='user_logout'),
+
+    # API
+    path('api/1.0/sample/', SampleAPI.as_view(), name='user_list_api')
 ]
