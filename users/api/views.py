@@ -44,3 +44,12 @@ class UserDetailAPI(APIView):
         user = get_object_or_404(User, username=username)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, username):
+        user = get_object_or_404(User, username=username)
+        serializer = UserSerializer(instance=user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
