@@ -7,15 +7,31 @@ from photos.models import Photo
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
+        fields = '__all__'
+
+
+class PhotoListSerializer(PhotoSerializer):
+    class Meta(PhotoSerializer.Meta):
         fields = [
-            'owner',
+            'id',
             'name',
             'url',
-            'description',
+        ]
+
+
+class PhotoDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = [
+            'id',
+            'name',
+            'url',
             'created_at',
             'modified_at',
             'license',
             'visibility',
-
-
         ]
+
+
+
+
