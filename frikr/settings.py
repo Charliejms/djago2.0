@@ -191,3 +191,9 @@ LOGIN_URL = '/login'
 
 # bad words settings
 PROJECT_BADWORDS = ['Pardillo', 'Abrazafarolas', 'Fotón']
+
+# REST FRAMEWORK SETTINGS
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 2
+}
