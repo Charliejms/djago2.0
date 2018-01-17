@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Photo {% endblock %}
+
+{% block section %}
+    {% if success_message %}
+        <span style="color: forestgreen"> {{ success_message|safe }}</span>
+    {% endif %}
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{  photo_form.as_p }}
+            <button type="submit"
+                    class="btn btn-primary">Create</button>
+    </form>
+{% endblock %}

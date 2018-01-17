@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block section %}
+    <h1>Listado de Fotos</h1>
+    <h2>Fotos publicadas</h2>
+    {% if photos|length > 0 %}
+        {% include 'photos/photos_loop.html' with photos_list=photos %}
+    {% else %}
+        ¡Sé el primero en publicar una foto!
+    {% endif %}
+{% endblock %}
