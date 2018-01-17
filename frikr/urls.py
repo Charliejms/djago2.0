@@ -23,6 +23,7 @@ from photos.views import (HomeView,
 from users.api.views import (SampleAPI,
                              UserListAPI,
                              UserDetailAPI)
+from photos.api.views import (PhotoListAPI)
 from users.views import (LoginView,
                          LogoutView)
 
@@ -39,8 +40,12 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='user_login'),
     path('logout', LogoutView.as_view(), name='user_logout'),
 
-    # API
+    # API user
     path('api/1.0/sample/', SampleAPI.as_view(), name='user_list_api'),
     path('api/1.0/users/', UserListAPI.as_view(), name='user_list_api'),
     path('api/1.0/user/<username>/', UserDetailAPI.as_view(), name='user_detail_api'),
+
+    # API photos
+    path('api/1.0/photos/', PhotoListAPI.as_view(), name='photo _list_api'),
+
 ]
