@@ -23,7 +23,8 @@ from photos.views import (HomeView,
 from users.api.views import (SampleAPI,
                              UserListAPI,
                              UserDetailAPI)
-from photos.api.views import (PhotoListAPI)
+from photos.api.views import (PhotoListAPI,
+                              PhotoDetailAPI)
 from users.views import (LoginView,
                          LogoutView)
 
@@ -47,5 +48,6 @@ urlpatterns = [
 
     # API photos
     path('api/1.0/photos/', PhotoListAPI.as_view(), name='photo _list_api'),
+    path('api/1.0/photos/<pk>', PhotoDetailAPI.as_view(), name='detail _list_api'),
 
 ]

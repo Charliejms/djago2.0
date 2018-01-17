@@ -11,5 +11,11 @@ class PhotoSerializer(serializers.ModelSerializer):
             'owner',
             'name',
             'url',
-            'description'
+            'description',
+            'created_at',
+            'modified_at',
+            'license',
+            'visibility',
+
+
         ]
