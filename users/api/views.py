@@ -9,6 +9,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 
 
 class SampleAPI(View):
@@ -25,9 +26,15 @@ class SampleAPI(View):
 class UserListAPI(APIView):
 
     def get(self, request):
-        users = User.objects.all()
+        # instancio paginador
+        paginator = PageNumberPagination()
+        users = User.objects.get_queryset().order_by('pk')
+        # paginar el queryset
+        paginator.paginate_queryset(users, request)
         serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+        serialized_user = serializer.data
+        # devolver la respuesta paginada
+        return paginator.get_paginated_response(serialized_user)
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
