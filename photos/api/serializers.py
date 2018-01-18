@@ -8,6 +8,7 @@ class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
         fields = '__all__'
+        read_only_fields = ('owner',)
 
 
 class PhotoListSerializer(PhotoSerializer):
@@ -24,6 +25,7 @@ class PhotoDetailSerializer(serializers.ModelSerializer):
         model = Photo
         fields = [
             'id',
+            'owner',
             'name',
             'url',
             'created_at',
@@ -31,7 +33,7 @@ class PhotoDetailSerializer(serializers.ModelSerializer):
             'license',
             'visibility',
         ]
-
+        read_only_fields = ('owner',)
 
 
 
