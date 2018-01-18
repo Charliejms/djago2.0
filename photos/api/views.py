@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission
 
 from photos.api.serializers import (PhotoSerializer,
                                     PhotoListSerializer,
@@ -29,7 +29,7 @@ class PhotoListAPI(PhotoQuerySet, ListCreateAPIView):
 class PhotoDetailAPI(PhotoQuerySet, RetrieveUpdateDestroyAPIView):
     queryset = Photo.objects.all()
 
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly, BasePermission,)
     serializer_class = PhotoDetailSerializer
 
     def get_queryset(self):
