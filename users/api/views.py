@@ -11,6 +11,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 
+# Permissions
+from users.api.permissions import UserPermission
+
 
 class SampleAPI(View):
 
@@ -24,8 +27,10 @@ class SampleAPI(View):
 
 
 class UserListAPI(APIView):
+    permission_classes = (UserPermission,)
 
     def get(self, request):
+        self.check_permissions(request)
         # instancio paginador
         paginator = PageNumberPagination()
         users = User.objects.get_queryset().order_by('pk')
@@ -37,6 +42,7 @@ class UserListAPI(APIView):
         return paginator.get_paginated_response(serialized_user)
 
     def post(self, request):
+        self.check_permissions(request)
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             new_user = serializer.save()
@@ -46,14 +52,21 @@ class UserListAPI(APIView):
 
 
 class UserDetailAPI(APIView):
+    permission_classes = (UserPermission,)
 
     def get(self, request, username):
+        # si no tiene permisos no realiza petición a la BD
+        self.check_permissions(request)
         user = get_object_or_404(User, username=username)
+        # tiene permiso dicho usuario
+        self.check_object_permissions(request, user)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def put(self, request, username):
+        self.check_permissions(request)
         user = get_object_or_404(User, username=username)
+        self.check_object_permissions(request, user)
         serializer = UserSerializer(instance=user, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -62,6 +75,8 @@ class UserDetailAPI(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, username):
+        self.check_permissions(request)
         user = get_object_or_404(User, username=username)
+        self.check_object_permissions(request, user)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

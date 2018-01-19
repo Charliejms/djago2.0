@@ -22,9 +22,9 @@ from photos.views import (HomeView,
                           UserPhotoView,)
 from users.api.views import (SampleAPI,
                              UserListAPI,
-                             UserDetailAPI)
+                             UserDetailAPI,)
 from photos.api.views import (PhotoListAPI,
-                              PhotoDetailAPI)
+                              PhotoDetailAPI,)
 from users.views import (LoginView,
                          LogoutView)
 
