@@ -14,14 +14,13 @@ class UserPermission(BasePermission):
         :return:
         """
         # Si puede crear un usuario sea quien sea, es decir sea quien sea puede
-        from users.api.views import UserDetailAPI
-        if request.method == 'POST':
+        if view.action == 'create':
             return True
         # Sin o es un POST, el superuser simpre puede
         elif request.user.is_superuser:
             return True
         # Si es un GET a la vista de detalle, tomo la decisión en has_object_permission
-        elif isinstance(view, UserDetailAPI):
+        elif view.action in ['retrieve', 'update', 'destroy']:
             return True
         else:
             # GET a /api/1.0/users/

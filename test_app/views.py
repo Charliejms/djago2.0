@@ -4,6 +4,7 @@ from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
+from photos.api.permissions import IsOwnerOrReadOnly
 from photos.models import Photo
 from photos.views import PhotoQuerySet
 
@@ -12,12 +13,11 @@ from photos.api.serializers import (PhotoListSerializer,
                                     PhotoSerializer)
 # User permissions
 from users.api.permissions import UserPermission
-from users.api.views import UserListAPI
 
 
-class PhotoViewSet(PhotoQuerySet, ModelViewSet):
+class PhotoViewSetTest(PhotoQuerySet, ModelViewSet):
     queryset = Photo.objects.all()
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
     def get_queryset(self):
         return self.get_photos_queryset(self.request)
