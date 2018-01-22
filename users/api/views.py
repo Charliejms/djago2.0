@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.generic import View
 from django.shortcuts import get_object_or_404
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ViewSet, GenericViewSet
 
 from users.api.serializers import UserSerializer
 
@@ -27,8 +27,8 @@ class SampleAPI(View):
         return HttpResponse(json_user)
 
 
-class UserViewSet(ViewSet):
-
+class UserViewSet(GenericViewSet):
+    serializer_class = UserSerializer
     permission_classes = (UserPermission,)
 
     def list(self, request):
