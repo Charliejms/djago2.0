@@ -14,40 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from photos.views import (HomeView,
-                          DetailView,
-                          CreatePhotoView,
-                          ListPhotoView,
-                          UserPhotoView,)
-from users.api.views import (SampleAPI,
-                             UserListAPI,
-                             UserDetailAPI,)
-from photos.api.views import (PhotoListAPI,
-                              PhotoDetailAPI,)
-from users.views import (LoginView,
-                         LogoutView)
+from django.urls import path, include
+from users import urls as users_urls
+from users.api import urls as users_urls_api
+from photos import urls as photos_urls
+from photos.api import urls as photos_urls_api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # Users
+    path('', include(users_urls)),
+    path('api/', include(users_urls_api)),
     # Photos
-    path('', HomeView.as_view(), name='home'),
-    path('photo/<pk>', DetailView.as_view(), name='detail'),
-    path('photo/create/', CreatePhotoView.as_view(), name='photo_create'),
-    # List photos user
-    path('photo/list/', ListPhotoView.as_view(), name='photo_list'),
-    path('<username>/misfotos/', UserPhotoView.as_view(), name='user_photos'),
-    # User
-    path('login/', LoginView.as_view(), name='user_login'),
-    path('logout', LogoutView.as_view(), name='user_logout'),
-
-    # API user
-    path('api/1.0/sample/', SampleAPI.as_view(), name='user_list_api'),
-    path('api/1.0/users/', UserListAPI.as_view(), name='user_list_api'),
-    path('api/1.0/user/<username>/', UserDetailAPI.as_view(), name='user_detail_api'),
-
-    # API photos
-    path('api/1.0/photos/', PhotoListAPI.as_view(), name='photo _list_api'),
-    path('api/1.0/photos/<pk>', PhotoDetailAPI.as_view(), name='detail _list_api'),
+    path('', include(photos_urls)),
+    path('api/', include(photos_urls_api))
 
 ]

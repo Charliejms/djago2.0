@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.generic import View
 from django.shortcuts import get_object_or_404
+from rest_framework.viewsets import ViewSet, GenericViewSet
 
 from users.api.serializers import UserSerializer
 
@@ -26,10 +27,11 @@ class SampleAPI(View):
         return HttpResponse(json_user)
 
 
-class UserListAPI(APIView):
+class UserViewSet(GenericViewSet):
+    serializer_class = UserSerializer
     permission_classes = (UserPermission,)
 
-    def get(self, request):
+    def list(self, request):
         self.check_permissions(request)
         # instancio paginador
         paginator = PageNumberPagination()
@@ -41,7 +43,7 @@ class UserListAPI(APIView):
         # devolver la respuesta paginada
         return paginator.get_paginated_response(serialized_user)
 
-    def post(self, request):
+    def create(self, request):
         self.check_permissions(request)
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -50,22 +52,18 @@ class UserListAPI(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class UserDetailAPI(APIView):
-    permission_classes = (UserPermission,)
-
-    def get(self, request, username):
+    def retrieve(self, request, pk):
         # si no tiene permisos no realiza petición a la BD
         self.check_permissions(request)
-        user = get_object_or_404(User, username=username)
+        user = get_object_or_404(User, pk=pk)
         # tiene permiso dicho usuario
         self.check_object_permissions(request, user)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def put(self, request, username):
+    def update(self, request, pk):
         self.check_permissions(request)
-        user = get_object_or_404(User, username=username)
+        user = get_object_or_404(User, pk=pk)
         self.check_object_permissions(request, user)
         serializer = UserSerializer(instance=user, data=request.data)
         if serializer.is_valid():
@@ -74,9 +72,9 @@ class UserDetailAPI(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, username):
+    def destroy(self, request, pk):
         self.check_permissions(request)
-        user = get_object_or_404(User, username=username)
+        user = get_object_or_404(User, pk=pk)
         self.check_object_permissions(request, user)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
