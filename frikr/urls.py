@@ -14,7 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
 from photos.views import (HomeView,
                           DetailView,
                           CreatePhotoView,
@@ -28,8 +30,16 @@ from photos.api.views import (PhotoListAPI,
 from users.views import (LoginView,
                          LogoutView)
 
+from test_app.views import PhotoViewSet
+
+# API ROUTER
+route = DefaultRouter()
+route.register('pot', PhotoViewSet)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include(route.urls)),
     # Photos
     path('', HomeView.as_view(), name='home'),
     path('photo/<pk>', DetailView.as_view(), name='detail'),

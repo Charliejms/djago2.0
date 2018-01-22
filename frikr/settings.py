@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'frikr',
+    'test_app',
     'photos',
     'users',
     # rest packages
