@@ -33,3 +33,8 @@
     ```
     python manage.py runserver
     ```
+
+##Ejecutar settings de develop:
+    ```
+    python manage.py migrate --settings-<app_project>.settings_develop
+    ```
