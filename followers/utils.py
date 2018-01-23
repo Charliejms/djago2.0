@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 
-# Models
-from followers.models import Relationship
-
 
 def get_followers(user):
     # devuelve una lista con los PK de los usarios de las relaciones en las que el usuario <user> es una relationship_target
@@ -13,7 +10,7 @@ def get_followers(user):
 
 
 def get_followers_v2(user):
-    relationships = Relationship.objects.filter(target=user).select_related('origin')
+    relationships = user.relationship_target.select_related('origin')
     followers = list()
     for relationship in relationships:
         followers.append(relationship.origin)
@@ -21,7 +18,7 @@ def get_followers_v2(user):
 
 
 def get_following(user):
-    relatinships = Relationship.objects.filter(origin=user).select_related('target')
+    relatinships = user.relationship_origin.select_related('target')
     following = list()
     for relatinship in relatinships:
         following.append(relatinship.target)
