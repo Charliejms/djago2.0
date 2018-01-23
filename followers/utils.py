@@ -13,7 +13,7 @@ def get_followers(user):
 
 
 def get_followers_v2(user):
-    relationships = Relationship.objects.filter(target=user)
+    relationships = Relationship.objects.filter(target=user).select_related('origin')
     followers = list()
     for relationship in relationships:
         followers.append(relationship.origin)
@@ -21,7 +21,7 @@ def get_followers_v2(user):
 
 
 def get_following(user):
-    relatinships = Relationship.objects.filter(origin=user)
+    relatinships = Relationship.objects.filter(origin=user).select_related('target')
     following = list()
     for relatinship in relatinships:
         following.append(relatinship.target)
