@@ -1,3 +1,7 @@
+
+# How to deploy a Django app with PostgreSQL + Gunicorn + Nginx using pyenv on Ubuntu Server 16.04
+ - [Personal gish](https://gist.github.com/Charliejms/87cca982052b5604bdea42d05825fe6e)
+
 # Instruciones:
 
 # Instalación Virtual Env
@@ -33,9 +37,6 @@
     ```
     python manage.py runserver
     ```
-# How to deploy a Django app with PostgreSQL + Gunicorn + Nginx using pyenv on Ubuntu Server 16.04
- - [Personal gish](https://gist.github.com/Charliejms/87cca982052b5604bdea42d05825fe6e)
- 
  
 ## Ejecutar settings de develop:
     ```
