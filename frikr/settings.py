@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'test_app',
     'photos',
     'users',
+    'followers',
     # rest packages
     'rest_framework',
 ]
