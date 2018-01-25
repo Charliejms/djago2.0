@@ -3,6 +3,7 @@ from django.db import models
 
 
 class Relationship(models.Model):
+    # unique_together = ("origin", "target") # works with postgresql and mysql
     origin = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name='relationship_origin')  # If "parent" rec gone, delete "child" rec!!!
