@@ -54,3 +54,6 @@ fabric.properties
 
 db.sqlite3
 frikr/__pycache__/
+
+# Translations
+*.mo

@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+import followers
 from users import urls as users_urls
 from users.api import urls as users_urls_api
 from photos import urls as photos_urls
 from photos.api import urls as photos_urls_api
+from followers import urls as follow_urls_api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +31,8 @@ urlpatterns = [
     path('api/', include(users_urls_api)),
     # Photos
     path('', include(photos_urls)),
-    path('api/', include(photos_urls_api))
+    path('api/', include(photos_urls_api)),
+
+    path('api/1.0/', include(follow_urls_api)),
 
 ]
