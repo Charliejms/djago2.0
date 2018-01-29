@@ -1,9 +1,12 @@
+{% load i18n %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %} Bienvenido a Frikr {% endblock %}</title>
+    <title>{% block title %}
+        {% blocktrans %}Hello {{ name }}{% endblocktrans %}
+    {% endblock %}</title>
     <link rel="stylesheet" href="{% static "" %}">
 </head>
 <body>
@@ -18,6 +21,8 @@
         <a href="{% url 'user_login' %}"> Entrar</a>
     {% endif %}
 </nav>
+
+<a href="/?lang=en">English</a> | <a href="/?lang=es">Spanish</a>
 <hr>
     <section>
         {% block section %} {% endblock %}

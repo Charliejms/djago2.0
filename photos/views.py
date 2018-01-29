@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View, ListView
 from django.db.models import Q
+from django.utils import translation
 # Create your views here.
 from photos.form import PhotoForm
 from photos.models import Photo, PUBLIC
@@ -30,6 +31,10 @@ class PhotoQuerySet(object):
 class HomeView(View):
     @staticmethod
     def get(request):
+        # force_language = request.GET.get('lang')
+        #
+        # if force_language:
+        #     translation.activate(force_language)
         photos = Photo.objects.all().filter(visibility=PUBLIC).order_by('-created_at')
         context = {
             'photos_list': photos[:5]

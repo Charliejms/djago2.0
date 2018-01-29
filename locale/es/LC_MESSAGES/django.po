@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-26 14:44+0000\n"
+"POT-Creation-Date: 2018-01-29 09:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,3 +25,8 @@ msgstr "No te puedes seguir a ti mismo."
 #: followers/serializers.py:31
 msgid "You already follow this user"
 msgstr "Ya estas siguiendo a esta usuario."
+
+#: templates/base.html:8
+#, python-format
+msgid "Hello %(name)s"
+msgstr "Hola %(name)s"
